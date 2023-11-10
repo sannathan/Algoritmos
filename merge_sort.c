@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 void merge(int *A,int l,int r){
     int temp[50000];
@@ -34,9 +35,43 @@ void mergeSort(int *A,int l,int r){
 }
 
 int main(void){
+    int c;
+    scanf("%d", &c);
+    int n[c];
+    int **A = (int **)malloc (c * sizeof(int *));
+
+    if(A == NULL){
+        printf("Erro");
+        exit(1);
+    }
 
 
+    for(int x = 0; x < c; x++){
+        scanf("%d", &n[x]);
+        A[x] = (int *)malloc(n[x] * sizeof(int)); //Aloca a quantidade de elementos fornecidos.
 
+        if(A[x] == NULL){
+            printf("O erro tá aqui");
+            exit(1);
+        }
+        for(int y = 0; y < n[x]; y++){
+            scanf("%d", &A[x][y]);
+        }
+
+        mergeSort(A[x], 0, n[x] - 1);
+    }
+
+    for(int z = 0; z < c; z++){
+        for(int w = 0; w < n[z]; w++){
+            printf("%d ", A[z][w]);
+        }
+        printf("\n");
+    }
+
+    for(int z = 0; z < c; z++){
+        free(A[z]);
+    }
+    free(A);
 
     return 0;
 }
