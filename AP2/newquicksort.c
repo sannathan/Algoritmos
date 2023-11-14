@@ -12,7 +12,7 @@ int particionar(int *arr, int baixo, int alto){
     int i = (baixo - 1);
 
     for(int j = baixo; j <= alto - 1; j++){
-        if(arr[j] > pivo){
+        if(arr[j] < pivo){
             i++;
             trocar(&arr[i], &arr[j]);
         }
