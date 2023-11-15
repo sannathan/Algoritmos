@@ -28,7 +28,7 @@ void quicksort(int *Lista, int baixo, int alto){
     }
 }
 int main(void){
-    int n, m; 
+    int n, m, valor = 0; 
     scanf("%d", &n); //Quantidade de barras de chocolate
 
     int custo[n];
@@ -39,22 +39,21 @@ int main(void){
 
     quicksort(&custo, 0, n - 1);
 
+
     scanf("%d", &m); //Quantidade de cupons
-    int qtdBarras[m], valor[m];
+    int qtdBarras[m];
 
 
     for(int y = 0; y < m; y++){
-        scanf("%d", &qtdBarras[y]); //Quantidade de barras necessárias para que o último seja de graça
-        valor[y] = 0;
+        scanf("%d", &qtdBarras[y]); //Quantidade de barras necessárias para que o último seja de graça     
+    }
 
-        for(int z = 0; z < n; z++){
-            valor[y] += custo[z];
-        }
-        valor[y] -= custo[n - qtdBarras[y]];        
+    for(int z = 0; z < n; z++){
+        valor += custo[z];
     }
 
     for(int y = 0; y < m; y++){
-        printf("%d\n", valor[y]);
+        printf("%d\n", valor - custo[n - qtdBarras[y]]);
     }
 
     return 0;
