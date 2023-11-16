@@ -63,18 +63,18 @@ int main(void){
 
     quicksort(lista, 0, n-1);
 
-    for(int w = 0; w < n; w++){
-        printf("%d ", lista[w]);
-    }
-    printf("\n");
+    //for(int w = 0; w < n; w++){
+        //printf("%d ", lista[w]);
+    //}
+    //printf("\n");
     for(int y = 0; y < n; y++){
         valor1 = lista[y];
         valor2 = BinarySearch(lista, n, valor1+k);
 
         if(valor2 > -1){
-            if(lista[valor2] - lista[y] == k){
+            //if(lista[valor2] - lista[y] == k){
                 numPar++;
-            }
+            //}
         }         
     }
 
