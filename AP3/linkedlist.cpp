@@ -2,10 +2,10 @@
 
 using namespace std;
 
-typedef struct{
+struct Link{
     int element;
-    Link next;
-}Link;
+    struct Link next;
+};
 
 typedef struct{
     Link head;
@@ -102,10 +102,10 @@ int main(void){
                 vezes++;
             }
             else if(op == "prev"){
-                prev(l);
+                prev(lista);
             }
             else if(op == "next"){
-                next(l);
+                next(lista);
             }
         }
     }
