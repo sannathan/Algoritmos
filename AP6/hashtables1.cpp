@@ -26,7 +26,7 @@ bool HashTable::isEmpty() const{
         sum += table[i].size();
     }
 
-    if(!sum){
+    if(sum == 0){
         return true;
     }
     else{
@@ -67,6 +67,7 @@ void HashTable::removeItem(int key){
     for(; bItr != end(cell); bItr++){
         if(bItr->first == key){
             keyExist = true;
+            cout << "[INFO] Usuario a ser removido: " << bItr->second << endl;
             bItr = cell.erase(bItr);
             cout << "[INFO] Par removido." << endl;
             break;
@@ -74,12 +75,49 @@ void HashTable::removeItem(int key){
     }
 
     if(!keyExist){
-        cout << "[Aviso] Chave não encontrada. Par não removido" << endl;
+        cout << "[Aviso] Chave nao encontrada. Par nao removido" << endl;
     }
 }
 
+void HashTable::printTable(){
+    for(int i{}; i < hashGroups; i++){
+        if(table[i].size() == 0) continue;
+
+        auto bItr = table[i].begin();
+        for (; bItr != table[i].end(); bItr++) {
+            cout << "[INFO] Chave: " << bItr->first << " Valor: "<< bItr->second << endl;
+        }
+    }
+}
+
+
 int main(void){
+    HashTable HT;
 
+    if(HT.isEmpty()){
+        cout << "Deu bom!" << endl;
+    }else{
+        cout << "Fiz merda :(" << endl;
+    }
 
+    HT.insertItem(1, "Nathan");
+    HT.insertItem(2, "Maria");
+    HT.insertItem(3, "Sarah");
+    HT.insertItem(2, "Lara");
+
+    HT.printTable();
+
+    HT.removeItem(1);
+    HT.removeItem(2);
+    HT.removeItem(5);
+
+    if(HT.isEmpty()){
+        cout << "Ta errado boy :(" << endl;
+    }else{
+        cout << "Ta certo :)" << endl;
+    }
+
+    list <int> teste;
+    auto iterador = begin(teste);
     return 0;
 }
