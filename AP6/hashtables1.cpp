@@ -13,9 +13,9 @@ class HashTable {
     public:
         bool isEmpty() const;
         int hashFunction(int key);
-        void insertItem(int key, string value);
+        void insertItem(int valor);
         void removeItem(int key);
-        string searchTable(int key);
+        void searchTable(int key);
         void printTable();
 };
 
@@ -34,20 +34,20 @@ bool HashTable::isEmpty() const{
     }
 }
 
-int HashTable::hashFunction(int key){
-    return abs(key)%hashGroups;
+int HashTable::hashFunction(int valor){
+    return abs(valor)%hashGroups;
 }
 
-void HashTable::insertItem(int key, string value){
-    int hashValue = hashFunction(key);
+void HashTable::insertItem(int valor){
+    int hashValue = hashFunction(valor); // h(k) = j
     auto& cell = table[hashValue];
     auto bItr = begin(cell);
     bool keyExist = false;
 
     for(; bItr != end(cell); bItr++){
-        if(bItr->first == key){
+        if(bItr->first == hashValue){
             keyExist = true;
-            bItr->second = value;
+            bItr->second = valor;
             cout <<"[AVISO] A chave existe. Valor trocado" << endl;
             break;
         }
@@ -79,6 +79,31 @@ void HashTable::removeItem(int key){
     }
 }
 
+void HashTable::searchTable(int key){
+    int hashValue = hashFunction(key);
+
+    if(table[hashValue].empty()){
+        cout << "[INFO] A lista está vazia";
+    }else{
+        auto& posicao = table[hashValue];
+        auto iterador = begin(posicao);
+        bool keyExist = false;
+
+        for(; iterador != end(posicao); iterador++){
+            if(iterador->first == key){
+                keyExist = true;
+                cout << "[INFO] O elemento de chave:" << iterador->first << "Foi encontrado e guarda o valor:" << iterador->second << endl;
+                break;
+            }
+        }
+
+        if(!keyExist){
+            cout << "[INFO] A chave não foi encontrada" << endl;
+        }
+    }
+    
+}
+
 void HashTable::printTable(){
     for(int i{}; i < hashGroups; i++){
         if(table[i].size() == 0) continue;
@@ -92,32 +117,12 @@ void HashTable::printTable(){
 
 
 int main(void){
-    HashTable HT;
+    HashTable OH;
+    int n{};
 
-    if(HT.isEmpty()){
-        cout << "Deu bom!" << endl;
-    }else{
-        cout << "Fiz merda :(" << endl;
+    for(int i{}; i < n; i++){
+        OH.insertItem()
     }
-
-    HT.insertItem(1, "Nathan");
-    HT.insertItem(2, "Maria");
-    HT.insertItem(3, "Sarah");
-    HT.insertItem(2, "Lara");
-
-    HT.printTable();
-
-    HT.removeItem(1);
-    HT.removeItem(2);
-    HT.removeItem(5);
-
-    if(HT.isEmpty()){
-        cout << "Ta errado boy :(" << endl;
-    }else{
-        cout << "Ta certo :)" << endl;
-    }
-
-    list <int> teste;
-    auto iterador = begin(teste);
+    
     return 0;
 }
