@@ -8,7 +8,7 @@ using namespace std;
 class HashTable {
     private:    
         static const int hashGroups = 10;
-        list<pair<int, string>> table[hashGroups];
+        list<pair<int, int>> table[hashGroups];
 
     public:
         bool isEmpty() const;
@@ -40,21 +40,21 @@ int HashTable::hashFunction(int valor){
 
 void HashTable::insertItem(int valor){
     int hashValue = hashFunction(valor); // h(k) = j
-    auto& cell = table[hashValue];
-    auto bItr = begin(cell);
+    auto& cell = table[hashValue]; //cell aponta para a lista
+    auto bItr = begin(cell); //iterador aponta para o início da lista
     bool keyExist = false;
 
     for(; bItr != end(cell); bItr++){
-        if(bItr->first == hashValue){
+        if(bItr->first == hashValue){ //Se a chave for encontrada
             keyExist = true;
-            bItr->second = valor;
+            bItr->second = valor; //Armazena o valor
             cout <<"[AVISO] A chave existe. Valor trocado" << endl;
             break;
         }
     }
 
     if(!keyExist){
-        cell.emplace_back(key, value);
+        cell.emplace_back(hashValue, valor); //Caso não seja encontrado a chave, será apenas adicionado
     }
 }
 
@@ -118,11 +118,17 @@ void HashTable::printTable(){
 
 int main(void){
     HashTable OH;
-    int n{};
+    int n{}, v{};
 
-    for(int i{}; i < n; i++){
-        OH.insertItem()
-    }
+    cin >> n;
     
+    for(int i{}; i < n; i++){
+        cin >> v;
+        OH.insertItem(v);
+    }
+
+    
+
+    //OH.printTable();
     return 0;
 }

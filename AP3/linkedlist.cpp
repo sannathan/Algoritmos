@@ -8,9 +8,9 @@ struct Link{
 };
 
 typedef struct{
-    Link head;
-    Link tail;
-    Link curr;
+    Link *head;
+    Link *tail;
+    Link *curr;
     int cnt;
 }List;
 
