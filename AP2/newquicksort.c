@@ -11,10 +11,10 @@ int particionar(int *arr, int baixo, int alto){
     int pivo = arr[alto];
     int i = (baixo - 1);
 
-    for(int j = baixo; j <= alto - 1; j++){
-        if(arr[j] < pivo){
+    for(int i = baixo; i <= alto - 1; i++){
+        if(arr[i] < pivo){
             i++;
-            trocar(&arr[i], &arr[j]);
+            trocar(&arr[i], &arr[i]);
         }
     }
     trocar(&arr[i+1], &arr[alto]);

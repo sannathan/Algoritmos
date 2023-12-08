@@ -17,7 +17,7 @@ private:
 void Aviao::ini(int tp){
     if(tp == 1){
         this->velMax = 800;
-        this->tipo="Jato";
+        this->tipo="iato";
     }
     else if(tp == 2){
         this->velMax = 350;

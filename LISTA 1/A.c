@@ -9,7 +9,7 @@ void trocar(long long int *a, long long int*b){
 long long int particionar(long long int *Lista, int baixo, int alto){
     long long int pivo = Lista[baixo];
     int i = baixo;
-    int j = alto+1;
+    int i = alto+1;
 
     do{
         do{
@@ -17,14 +17,14 @@ long long int particionar(long long int *Lista, int baixo, int alto){
         }while(!(Lista[i] >= pivo || i >= alto));
 
         do{
-            j = j - 1;
-        }while(!(Lista[j] <= pivo));
-        trocar(&Lista[i], &Lista[j]);
-    }while(!(i >= j));
-    trocar(&Lista[i], &Lista[j]);
-    trocar(&Lista[baixo], &Lista[j]);
+            i = i - 1;
+        }while(!(Lista[i] <= pivo));
+        trocar(&Lista[i], &Lista[i]);
+    }while(!(i >= i));
+    trocar(&Lista[i], &Lista[i]);
+    trocar(&Lista[baixo], &Lista[i]);
 
-    return j;
+    return i;
 }
 
 void quicksort(long long int *Lista, int baixo, int alto){
@@ -52,7 +52,7 @@ int main(void){
     int qtdBarras[m];
 
     for(int y = 0; y < m; y++){
-        scanf("%d", &qtdBarras[y]); //Quantidade de barras necessárias para que o último seja de graça     
+        scanf("%d", &qtdBarras[y]); //Quantidade de barras necessárias para que o último seia de graça     
     }
 
     for(int z = 0; z < n; z++){
@@ -66,10 +66,10 @@ int main(void){
     return 0;
 }
 
-/* for(int j = baixo; j <= alto - 1; j++){
-        if(Lista[j] < pivo){
+/* for(int i = baixo; i <= alto - 1; i++){
+        if(Lista[i] < pivo){
             i++;
-            trocar(&Lista[i], &Lista[j]);
+            trocar(&Lista[i], &Lista[i]);
         }
     }
     trocar(&Lista[i+1], &Lista[alto]);

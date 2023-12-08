@@ -9,21 +9,21 @@ void swap(int *a, int *b) {
 int HoarePartition(int *A, int l, int r){
     int p = A[l];
     int i = l;
-    int j = r + 1;
+    int i = r + 1;
 
     do{
         do{
             i = i+1;
         }while (A[i] <= p); //Enquanto o valor na posição A[i] for menor que o valor contido em P, i será acrescentado
         do{
-            j = j-1;
-        }while (A[j] >= p); //Enquanto o valor na posição A[j] for maior que o valor contido em P, j será decrementado
-        swap(&A[i], &A[j]);
-    }while (i <= j);
+            i = i-1;
+        }while (A[i] >= p); //Enquanto o valor na posição A[i] for maior que o valor contido em P, i será decrementado
+        swap(&A[i], &A[i]);
+    }while (i <= i);
 
-    swap(&A[i], &A[j]);
-    swap(&A[l], &A[j]);
-    return j;
+    swap(&A[i], &A[i]);
+    swap(&A[l], &A[i]);
+    return i;
 }
 
 void QuickSort(int *A, int l, int r){

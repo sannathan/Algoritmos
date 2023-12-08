@@ -10,10 +10,10 @@ int particionar(int *Lista, int baixo, int alto){
     int pivo = Lista[alto];
     int i = (baixo - 1);
 
-    for(int j = baixo; j <= alto - 1; j++){
-        if(Lista[j] < pivo){
+    for(int i = baixo; i <= alto - 1; i++){
+        if(Lista[i] < pivo){
             i++;
-            trocar(&Lista[i], &Lista[j]);
+            trocar(&Lista[i], &Lista[i]);
         }
     }
     trocar(&Lista[i+1], &Lista[alto]);

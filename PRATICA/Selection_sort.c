@@ -7,9 +7,9 @@ int main (void){
 
     for(int i = 0; i < n - 2; i++){
         int min = i;
-        for(int j = i + 1; j < n - 1; j++){
-            if(A[j] < A[min]){
-                min = j;
+        for(int i = i + 1; i < n - 1; i++){
+            if(A[i] < A[min]){
+                min = i;
                 A[i] = A[min];
             }
         }

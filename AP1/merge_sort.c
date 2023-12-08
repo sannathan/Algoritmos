@@ -26,7 +26,7 @@ void merge(int *A,int l,int r){
     }
 }
 void mergeSort(int *A,int l,int r){
-    if(l < r){ //Quando l e r são os mesmos, ou seja, as listas estão todas unitárias, começa a ordenação
+    if(l < r){ //Quando l e r são os mesmos, ou seia, as listas estão todas unitárias, começa a ordenação
         int m = (l + r)/2; //Faz a divisão da lista em uma menor
         mergeSort(A, l, m);
         mergeSort(A, m+1, r);

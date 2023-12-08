@@ -41,9 +41,9 @@ void enqueue(Queue *q, char it){
     q->size++;
 }
 
-char dequeue(Queue *q){
+void dequeue(Queue *q){
     char it;    
-    if(!(q->size == 0)){
+    if(q->size != 0){
         it = q->front->next->element;
         Link *cache = q->front->next;
         q->front->next = q->front->next->next;
@@ -51,112 +51,124 @@ char dequeue(Queue *q){
 
         if(q->front->next == NULL){
             q->rear = q->front;
-            q->size--;
         }
+        q->size--;
     }
-    return it;
 }
 int main(void){
-    //Queue *Fila = new Queue;
+    Queue *Fila = create_queue();
 
-    string S;
+    char S[200001];
 
-    while(cin){
-        cin >> S;
+    cin >> S;
+
+    int tamString = sizeof(S);
+
+    for(int i{}; i < tamString; i++){
+        enqueue(Fila, S[i]);
+
+        if(i > 2){
+            if(S[i] == 'C' && S[i-1] == 'B' && S[i-2] == 'A'){
+            dequeue(Fila);
+            dequeue(Fila);
+            dequeue(Fila);
+            }
+            else if(S[i] == 'B' && S[i-1] == 'A' && S[i+1] == 'C' && i < tamString - 1){
+            dequeue(Fila); 
+            dequeue(Fila);
+            dequeue(Fila);
+            }
+            else if(S[i] == 'A' && S[i+1] == 'B' && S[i+2] == 'C' && i < tamString - 2){
+            dequeue(Fila);
+            dequeue(Fila);
+            dequeue(Fila);
+            }  
+        }
     }
 
-    //enqueue(Fila, )
+    cout << "Elementos da fila: ";
+    
+    while (Fila->front->next != NULL) {
+        cout << Fila->front->next->element;
+        dequeue(Fila);
+    }
 
+    cout << endl;
+
+    while (Fila->front->next != NULL) {
+        Link *temp = Fila->front->next;
+        Fila->front->next = temp->next;
+        delete temp;
+    }
+
+    delete Fila;
 
     return 0;
 }
 
 // 1º Passo: Criar a fila a qual será inserida a string. FEITO
 // 2° Passo: receber a string. FEITO
-// 3° Passo: inserir a string na fila 
+// 3° Passo: inserir a string na fila FEITO
 // 4° Passo: fazer a operação de remoção da string "ABC"
 // 5° Passo: printar a string final
 
+/* Se encontrar a e o próximo for b e o próximo do próximo for c{
+        remove(a);
+        remove(b);
+        remove(c);
+    }
+    caso contrário, se encontra b, o anterior for a e o próximo c{
+        remove(a);
+        remove(b);
+        remove(c);
+    }
+    caso contrário, se encontrar c, e o anterior for b e o anterior do anterior for a{
+        remove(a);
+        remove(b);
+        remove(c);
+    }
 
 
+        while(i < tamString){
+        if(S[i] == 'C' && S[i-1] == 'B' && S[i-2] == 'A'){
+            dequeue(Fila);
+            dequeue(Fila);
+            dequeue(Fila);
+            tamMax += 1;
+            i -= 3;
+        }
+        else if(S[i] == 'B' && S[i-1] == 'A' && S[i+1] == 'C' && i < tamString - 1){
+            dequeue(Fila); 
+            dequeue(Fila);
+            dequeue(Fila);
+            tamMax += 1;
+            i -= 3;
+        }
+        else if(S[i] == 'A' && S[i+1] == 'B' && S[i+2] == 'C' && i < tamString - 2){
+            dequeue(Fila);
+            dequeue(Fila);
+            dequeue(Fila);
+            tamMax += 1;
+            i -= 3;
+        }
+        else{
+            if(tamMax == valor && i == 0){
+                i--;
+            }
+            else if(i == 0 && tamMax < valor){
+                i = (tamString - 1) - (tamMax*3);
+                
+                while (Fila->front->next != NULL) {
+                    cout << Fila->front->next->element << " ";
+                    dequeue(Fila);
+                }
+                
+                cout << endl;
+            }
+            else{
+                i--;
+            }
 
-// char S[200000];
-// cin >> S;
-
-
-// //Lista *abc = create_list(sizeof(S));
-// typedef struct{
-//     int maxSize;
-//     int listSize;
-//     int curr;
-//     string *listArray;
-// }Lista;
-
-// Lista* create_list(int size){
-//     Lista* l = new Lista;
-//     l->maxSize = size;
-//     l->curr = 0;
-//     l->listSize = l->curr;
-//     l->listArray = new string[size];
-//     return l;
-// }
-
-// void insert(Lista *l, char it){
-//     if(l->listSize >= l->maxSize){
-//         exit(1);
-//     }
-//     int i = l->listSize;
-
-//     while(i > l->curr){
-//         l->listArray[i] = l->listArray[i - 1];
-//         i--;
-//     }
-//     l->listArray[l->curr] = it;
-//     l->listSize++;
-// }
-
-// void *moveToStart(Lista *l){
-//     l->curr = 0;
-// }
-
-// void *moveToEnd(Lista *l){
-//     l->curr = l->listSize;
-// }
-
-// void prev(Lista *l){
-//     if(l->curr != 0){
-//         l->curr--;
-//     }
-// }
-
-// void next(Lista *l){
-//     if(l->curr < l->listSize){
-//         l->curr++;
-//     }
-// }
-
-// int remover(Lista *l){
-//     if(l->curr < 0 || l->curr >= l->listSize){
-//         return NULL;
-//     }
-//     int it = l->listArray[l->curr];
-//     int i = l->curr;
-
-//     while(i < l->listSize - 1){
-//         l->listArray[i] = l->listArray[i+1];
-//         i++;
-//     }
-//     l->listSize--;
-//     return it;
-// }
-
-// int count(Lista *l, int x){
-//     int count = 0;
-
-//     for(int y = 0; y < l->listSize; y++){
-//         if(x == l->listArray[y]){
-//             count++;
-//         }
-//     }
-//     return count;
-// }
+        }
+    }
+*/    

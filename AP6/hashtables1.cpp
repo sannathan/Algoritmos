@@ -39,7 +39,7 @@ int HashTable::hashFunction(int valor){
 }
 
 void HashTable::insertItem(int valor){
-    int hashValue = hashFunction(valor); // h(k) = j
+    int hashValue = hashFunction(valor); // h(k) = i
     auto& cell = table[hashValue]; //cell aponta para a lista
     auto bItr = begin(cell); //iterador aponta para o início da lista
     bool keyExist = false;
@@ -54,7 +54,7 @@ void HashTable::insertItem(int valor){
     }
 
     if(!keyExist){
-        cell.emplace_back(hashValue, valor); //Caso não seja encontrado a chave, será apenas adicionado
+        cell.emplace_back(hashValue, valor); //Caso não seia encontrado a chave, será apenas adicionado
     }
 }
 
