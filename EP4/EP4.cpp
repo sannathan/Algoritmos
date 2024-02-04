@@ -28,7 +28,7 @@ BSTNode *create_bstnode(int k, int e){
     n->element = e;
     n->left = NULL;
     n->right = NULL;
-    n->height = -1;
+    n->height = 0;
     return n;
 }
 
