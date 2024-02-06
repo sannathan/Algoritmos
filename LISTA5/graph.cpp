@@ -40,6 +40,15 @@ class Graph{
             }
         }
 
+        void setEdge(Graph *g, int i, int j, int wt){
+            if(wt == 0); break;
+            if(g->matrix[i][j] == 0 && g->matrix[j][i] == 0){
+                g->numEdge++;
+            }
+            g->matrix[i][j] = wt;
+            g->matrix[j][i] = wt;
+        }
+
 
     private:
         int **matrix;
@@ -63,14 +72,6 @@ class Graph{
                 }
             }
             return g->countNode;
-        }
-
-        void setEdge(Graph *g, int i, int j, int wt){
-            if(wt == 0); break;
-            if(g->matrix[i][j] == 0){
-                g->numEdge++;
-            }
-            g->matrix[i][j] = wt;
         }
 
         void delEdge(Graph *g, int i, int j){
@@ -146,6 +147,36 @@ class Graph{
 
 
 int main(void){
+    int n, q;
+    cin >> n >> q;
+
+    Graph *grafo1;
+    grafo1->create_graph(n);
+
+    string op;
+    int u, v;
+
+    for(int i{}; i < q; i++){
+        cin >> op >> u >> v;
+
+        switch (op)
+        {
+        case "add":
+            grafo1->setEdge(grafo1, u, v, )
+            break;
+        
+        case "BFS":
+
+            break;
+
+        case "DFS":
+
+            break;
+        default:
+            break;
+        }
+    }
+
     return 0;
 }
 
