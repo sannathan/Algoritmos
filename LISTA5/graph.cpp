@@ -10,43 +10,65 @@ class Graph{
         Graph *create_graph(int n){
             Graph *g = new Graph;
             g->Mark = new bool[n];
-            g->matrix = new int[n];
+            g->matrix = new int* [n];
             for(int i{}; i < n; i++){
                 g->matrix[i] = new int[n];
+                for(int j{}; j < n; j++){
+                    g->matrix[i][j] = 0;
+                }
             }
             g->numEdge = 0;
             g->countNode = n;
             return g;
         }
-    
-        void graphTraverseDFS(Graph *g){
-            for(v{}; v <= g->countNode - 1; v++){
-                setMark(g, v, false);
-            }
-            for(v{}; v <= count - 1; v++){
-                if(getMark(g, v) == false){
-                    DFS(g, v);
-                }
-            }
-        }
-
-        void graphTraverseBFS(Graph *g){
-            for(int v{}; v <= g->countNode; v++){
-                setMark(g, v, "UNVISITED");
-            }
-            for(int v{}; v <= g->countNode; v++){
-                if(getMark(g, v) == "UNVISITED")
-                    BFS(g, v);
-            }
-        }
 
         void setEdge(Graph *g, int i, int j, int wt){
-            if(wt == 0); break;
-            if(g->matrix[i][j] == 0 && g->matrix[j][i] == 0){
-                g->numEdge++;
+            if(wt != 0){
+                if(g->matrix[i][j] == 0 && g->matrix[j][i] == 0){
+                    g->numEdge++;
+                }
+                g->matrix[i][j] = wt;
+                g->matrix[j][i] = wt;
             }
-            g->matrix[i][j] = wt;
-            g->matrix[j][i] = wt;
+        }
+
+        void DFS(int v){
+            cout << "Iniciando a visita do no:" << v << endl;
+            setMark(this, v, true);
+            int w = first(this, v);
+            while(w < countNode){
+                if(getMark(this, w) == false){
+                    DFS(w);
+                    w = next(this, v, w);
+                }
+            }
+            cout << "Finalizando a visita do no:" << v << endl;
+        }
+
+        void BFS(int start){
+            queue<int> Q;
+            int v, w;
+            Q.push(start);
+            setMark(this, start, true);
+            
+            while(Q.size() > 0){
+                v = Q.front();
+                Q.pop();
+                
+                cout << "o no:" << v << "Foi removido" << endl;
+                w = first(this, v);
+
+                while(w < countNode){
+                    if(getMark(this, w) == false){
+                        setMark(this, w, true);
+                        Q.push(w);
+                    }
+                    w = next(this, v, w);
+                }
+            }
+
+            
+            cout << "BFS FINALIZADO" << endl;    
         }
 
 
@@ -55,6 +77,27 @@ class Graph{
         int numEdge;
         bool *Mark;
         int countNode;
+
+        void graphTraverseDFS(Graph *g){
+            for(int v{}; v <= g->countNode - 1; v++){
+                setMark(g, v, false);
+            }
+            for(int v{}; v <= g->countNode - 1; v++){
+                if(getMark(g, v) == false){
+                    DFS(v);
+                }
+            }
+        }
+
+        void graphTraverseBFS(){
+            for(int v{}; v <= countNode; v++){
+                setMark(this, v, false);
+            }
+            for(int v{}; v <= countNode; v++){
+                if(getMark(this, v) == false)
+                    BFS(v);
+            }
+        }
 
         int first(Graph *g, int v){
             for(int i{}; i <= g->countNode - 1; i++){
@@ -97,41 +140,7 @@ class Graph{
             }
         }
 
-        void DFS(Graph *g, int v){
-            cout << "Iniciando a visita do nó:" << v << endl;
-            setMark(g, v, true);
-            int w = first(g, v);
-            while(w < g->countNode){
-                if(getMark(g, w) == false){
-                    DFS(g, w);
-                    w = next(g, v, w);
-                }
-            }
-            cout << "Finalizando a visita do nó:" << v << endl;
-        }
-
-        void BFS(Graph *g, int start){
-            queue<int> Q;
-            Q.push(start);
-            setMark(g, start, true);
-
-            while(Q.size() > 0){
-            int v = Q.pop();
-            cout << "o nó:" << v << "Foi removido" << endl;
-            int w = first(g, v);
-            }
-
-            while(w < g->countNode){
-                if(getMark(g, w) == false){
-                    setMark(g, w, true);
-                    Q.push(w);
-                }
-                w = next(g, v, w);
-            }
-            cout << "BFS FINALIZADO" << endl;    
-        }
-
-        void toposort(Graph *g, int v, stack s){
+        void toposort(Graph *g, int v, stack<int> s){
             setMark(g, v, true);
             int w = first(g, v);
 
@@ -143,40 +152,39 @@ class Graph{
             }
             s.push(v);
         }
-}
+};
 
 
 int main(void){
     int n, q;
+
     cin >> n >> q;
 
-    Graph *grafo1;
-    grafo1->create_graph(n);
-
-    string op;
-    int u, v;
+    Graph *grafo = new Graph;
+    grafo = grafo->create_graph(n);
 
     for(int i{}; i < q; i++){
-        cin >> op >> u >> v;
+        string op;
+        int u, v;
 
-        switch (op)
-        {
-        case "add":
-            grafo1->setEdge(grafo1, u, v, )
-            break;
-        
-        case "BFS":
+        cin >> op;
 
-            break;
+        if(op == "add"){
+            cin >> u >> v;
 
-        case "DFS":
+            grafo->setEdge(grafo, u, v, 1);
+        }
+        else if(op == "BFS"){
+            cin >> v;
 
-            break;
-        default:
-            break;
+            grafo->BFS(v);
+        }
+        else if(op == "DFS"){
+            cin >> v;
+
+            grafo->DFS(v);
         }
     }
-
     return 0;
 }
 
