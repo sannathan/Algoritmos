@@ -22,55 +22,36 @@ class Graph{
             return g;
         }
 
-        void setEdge(Graph *g, int i, int j, int wt){
+        void setEdge(int i, int j, int wt){
             if(wt != 0){
-                if(g->matrix[i][j] == 0 && g->matrix[j][i] == 0){
-                    g->numEdge++;
+                if(matrix[i][j] == 0 && matrix[j][i] == 0){
+                    numEdge++;
                 }
-                g->matrix[i][j] = wt;
-                g->matrix[j][i] = wt;
+                matrix[i][j] = wt;
+                matrix[j][i] = wt;
             }
         }
 
-        void DFS(int v){
-            cout << "Iniciando a visita do no:" << v << endl;
-            setMark(this, v, true);
-            int w = first(this, v);
-            while(w < countNode){
-                if(getMark(this, w) == false){
-                    DFS(w);
-                    w = next(this, v, w);
+        void graphTraverseDFS(){
+            for(int v{}; v <= countNode - 1; v++){
+                setMark(v, false);
+            }
+            for(int v{}; v <= countNode - 1; v++){
+                if(getMark(v) == false){
+                    DFS(v);
                 }
             }
-            cout << "Finalizando a visita do no:" << v << endl;
         }
 
-        void BFS(int start){
-            queue<int> Q;
-            int v, w;
-            Q.push(start);
-            setMark(this, start, true);
-            
-            while(Q.size() > 0){
-                v = Q.front();
-                Q.pop();
-                
-                cout << "o no:" << v << "Foi removido" << endl;
-                w = first(this, v);
-
-                while(w < countNode){
-                    if(getMark(this, w) == false){
-                        setMark(this, w, true);
-                        Q.push(w);
-                    }
-                    w = next(this, v, w);
-                }
+        void graphTraverseBFS(){
+            for(int v{}; v <= countNode - 1; v++){
+                setMark( v, false);
             }
-
-            
-            cout << "BFS FINALIZADO" << endl;    
+            for(int v{}; v <= countNode - 1; v++){
+                if(getMark(v) == false)
+                    BFS(v);
+            }
         }
-
 
     private:
         int **matrix;
@@ -78,43 +59,59 @@ class Graph{
         bool *Mark;
         int countNode;
 
-        void graphTraverseDFS(Graph *g){
-            for(int v{}; v <= g->countNode - 1; v++){
-                setMark(g, v, false);
-            }
-            for(int v{}; v <= g->countNode - 1; v++){
-                if(getMark(g, v) == false){
-                    DFS(v);
+        void DFS(int v){
+            cout << v << " ";
+            setMark(v, true);
+            int w = first(v);
+            while(w < countNode){
+                if(getMark(w) == false){
+                    DFS(w);
                 }
+                w = next(v, w);
             }
         }
 
-        void graphTraverseBFS(){
-            for(int v{}; v <= countNode; v++){
-                setMark(this, v, false);
-            }
-            for(int v{}; v <= countNode; v++){
-                if(getMark(this, v) == false)
-                    BFS(v);
-            }
+        void BFS(int start){
+            queue<int> Q;
+            int v, w;
+            Q.push(start);
+            setMark(start, true);
+            
+            while(Q.size() > 0){
+                v = Q.front();
+                Q.pop();
+                
+                cout << v << " ";
+                w = first(v);
+
+                while(w < countNode){
+                    if(getMark( w) == false){
+                        setMark(w, true);
+                        Q.push(w);
+                    }
+                    w = next(v, w);
+                }
+            }  
+
+            cout << endl;
         }
 
-        int first(Graph *g, int v){
-            for(int i{}; i <= g->countNode - 1; i++){
-                if(g->matrix[v][i] != 0){
+        int first(int v){
+            for(int i{}; i <= countNode - 1; i++){
+                if(matrix[v][i] != 0){
                     return i;
                 }
             }
-            return g->countNode;
+            return countNode;
         }
 
-        int next(Graph *g, int v, int w){
-            for(int i = w + 1; i <= g->countNode - 1; i++){
-                if(g->matrix[v][i] != 0){
+        int next(int v, int w){
+            for(int i = w + 1; i <= countNode - 1; i++){
+                if(matrix[v][i] != 0){
                     return i;
                 }
             }
-            return g->countNode;
+            return countNode;
         }
 
         void delEdge(Graph *g, int i, int j){
@@ -124,15 +121,15 @@ class Graph{
             g->matrix[i][j] = 0;
         }
 
-        void setMark(Graph *g, int v, bool var){
+        void setMark(int v, bool var){
             if(var == true)
-                g->Mark[v] = true;
+                Mark[v] = true;
             else
-                g->Mark[v] = false;
+                Mark[v] = false;
         }
 
-        bool getMark(Graph *g, int v){
-            if(g->Mark[v] == true){
+        bool getMark(int v){
+            if(Mark[v] == true){
                 return true;
             }
             else{
@@ -141,14 +138,14 @@ class Graph{
         }
 
         void toposort(Graph *g, int v, stack<int> s){
-            setMark(g, v, true);
-            int w = first(g, v);
+            setMark(v, true);
+            int w = first(v);
 
             while(w < g->countNode){
-                if(getMark(g, w) == false){
+                if(getMark(w) == false){
                     toposort(g, w, s);
                 }
-                w = next(g, v, w);
+                w = next(v, w);
             }
             s.push(v);
         }
@@ -172,17 +169,18 @@ int main(void){
         if(op == "add"){
             cin >> u >> v;
 
-            grafo->setEdge(grafo, u, v, 1);
+            grafo->setEdge(u, v, 1);
         }
         else if(op == "BFS"){
             cin >> v;
 
-            grafo->BFS(v);
+            grafo->graphTraverseBFS();
         }
         else if(op == "DFS"){
             cin >> v;
 
-            grafo->DFS(v);
+            grafo->graphTraverseDFS();
+            cout << endl;
         }
     }
     return 0;
