@@ -7,38 +7,40 @@ using namespace std;
 
 class Graph{
     public:
-        Graph *create_graph(int n, int m){
-            Graph *g = new Graph;
-            g->Mark = new bool[n];
-            g->listaAdj = new list<int>[n];
-            for(int i{}; i < n; i++){
+    Graph(int n){
+        listaAdj = new list<int>[n];
+        countNode = n;
+        Mark = new bool[n];
+        for(int i{}; i < n; i++){
                 listaAdj[i] = list<int>();
+                Mark[i] = false;
+        }
+    }
+
+    ~Graph(){
+        delete[] listaAdj;
+        delete[] Mark;
+    }
+
+    void setEdge(int i, int j){
+        listaAdj[i].push_back(j);
+    }
+
+    void toposort(int v, stack<int> *s){
+        setMark(v, true);
+        int w = first(v);
+
+        while(w < countNode){
+            if(!getMark(w)){
+                toposort(w, s);
             }
-            g->numEdge = m;
-            g->countNode = n;
-            return g;
+            w = next(v, w);
         }
-
-        void setEdge(int i, int j){
-            listaAdj[i].push_back(j);
-        }
-
-        void toposort(int v, stack<int> s){
-            setMark(v, true);
-            int w = first(v);
-
-            while(w < countNode){
-                if(getMark(w) == false){
-                    toposort(w, s);
-                }
-                w = next(v, w);
-            }
-            s.push(v);
-        }
+        s->push(v);
+    }
 
     private:
         list<int> *listaAdj;
-        int numEdge;
         bool *Mark;
         int countNode;
 
@@ -52,37 +54,25 @@ class Graph{
         int next(int v, int w){
             auto elem = listaAdj[v].begin();
 
-            if(!listaAdj[v].empty()){
-                for(int elemento : listaAdj[v]){
-                    if(elemento == w){
-                        ++elem;
-                        if(elem != listaAdj[v].end()){
-                            return *elem;
-                        }
-                    }
-                    elem++;
+            while(elem != listaAdj[v].end() && *elem != w){
+                ++elem;
+            }
+            if(elem != listaAdj[v].end() && *elem == w){
+                ++elem;
+                if(elem != listaAdj[v].end()){
+                    return *elem;
                 }
             }
             return countNode;
         }
 
         void setMark(int v, bool var){
-            if(var == true)
-                Mark[v] = true;
-            else
-                Mark[v] = false;
+            Mark[v] = var;
         }
 
         bool getMark(int v){
-            if(Mark[v] == true){
-                return true;
-            }
-            else{
-                return false;
-            }
+            return Mark[v];
         }
-
-        
 };
 
 int main(void){
@@ -90,17 +80,32 @@ int main(void){
 
     cin >> n >> m;
 
-    Graph *grafo = new Graph;
-    grafo = grafo->create_graph(n, m);
+    Graph grafo(n);
+    stack <int> *s = new stack<int>;
 
     for(int i{}; i < m; i++){
         int u, v;
 
         cin >> u >> v;
 
-        grafo->setEdge(u, v);
+        grafo.setEdge(u, v);
+        grafo.toposort(u, s);
     }
 
-    cout << "deu certo";
+    list <int> aux;
+    while(!s->empty()){
+        aux.emplace_front(s->top());
+        s->pop();
+    }
+
+    auto elem = aux.begin();
+
+    while(elem != aux.end()){
+        cout << *elem << " ";
+        ++elem;
+    }
+
+    delete s;
+    grafo.~Graph();
     return 0;
 }

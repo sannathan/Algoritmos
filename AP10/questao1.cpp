@@ -32,22 +32,22 @@ class Graph{
             }
         }
 
-        void graphTraverseDFS(){
+        void graphTraverseDFS(int ver){
             for(int v{}; v <= countNode - 1; v++){
                 setMark(v, false);
             }
-            for(int v{}; v <= countNode - 1; v++){
+            for(int v = ver; v <= countNode - 1; v++){
                 if(getMark(v) == false){
                     DFS(v);
                 }
             }
         }
 
-        void graphTraverseBFS(){
+        void graphTraverseBFS(int ver){
             for(int v{}; v <= countNode - 1; v++){
                 setMark( v, false);
             }
-            for(int v{}; v <= countNode - 1; v++){
+            for(int v = ver; v <= countNode - 1; v++){
                 if(getMark(v) == false)
                     BFS(v);
             }
@@ -174,12 +174,12 @@ int main(void){
         else if(op == "BFS"){
             cin >> v;
 
-            grafo->graphTraverseBFS();
+            grafo->graphTraverseBFS(v);
         }
         else if(op == "DFS"){
             cin >> v;
 
-            grafo->graphTraverseDFS();
+            grafo->graphTraverseDFS(v);
             cout << endl;
         }
     }
