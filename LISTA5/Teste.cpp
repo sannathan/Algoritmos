@@ -1,67 +1,113 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-map<string, vector<string>> adj;
-map<string, int> dist;
-set<string> all_nodes;
+class Graph{
+    public:
+        vector<int> listaAdj[10001];
+        int in[10001];
+        vector<int> res;
+        bool *Mark = new bool[10001];
+        bool *recStack = new bool[10001];
+        int countNode;
+        stack<int> Stack;
 
-void bfs(string src) {
-    queue<string> q;
-    q.push(src);
-    dist[src] = 0;
-    while(!q.empty()) {
-        string node = q.front();
-        q.pop();
-        for(string child : adj[node]) {
-            if(dist.count(child) == 0) {
-                dist[child] = dist[node] + 1;
-                q.push(child);
-            }
+        void setEdge(int i, int j){
+            listaAdj[i].push_back(j);
         }
-    }
-}
 
-int main() {
-    int t;
-    cin >> t;
-    while(t--) {
-        int n;
-        cin >> n;
-        adj.clear();
-        dist.clear();
-        all_nodes.clear();
-        for(int i = 0; i < n; i++) {
-            string a, b, c;
-            cin >> a >> b >> c;
-            all_nodes.insert(a);
-            all_nodes.insert(b);
-            all_nodes.insert(c);
-            adj[a].push_back(b);
-            adj[a].push_back(c);
-            adj[b].push_back(a);
-            adj[b].push_back(c);
-            adj[c].push_back(a);
-            adj[c].push_back(b);
+        int first(int v){
+            if(!listaAdj[v].empty()){
+                return listaAdj[v].front();
+            }
+            return countNode;
         }
-        bfs("Ahmad");
-        vector<pair<int, string>> ans;
-        for(auto it : dist) {
-            ans.push_back({it.second, it.first});
+
+        void setMark(int v, bool var){
+            Mark[v] = var;
         }
-        for(auto it : all_nodes) {
-            if(dist.count(it) == 0) {
-                ans.push_back({INT_MAX, it});
+
+        bool getMark(int v){
+            return Mark[v];
+        }
+
+        int next(int v, int w){
+            auto elem = listaAdj[v].begin();
+
+            while(elem != listaAdj[v].end() && *elem != w){
+                ++elem;
+            }
+            if(elem != listaAdj[v].end() && *elem == w){
+                ++elem;
+                if(elem != listaAdj[v].end()){
+                    return *elem;
+                }
+            }
+            return countNode;
+        }
+
+        bool DFS(int v){
+            setMark(v, true);
+            recStack[v] = true;
+
+            for(auto i = listaAdj[v].begin(); i != listaAdj[v].end(); ++i){
+                if (!Mark[*i] && DFS(*i))
+                    return true;
+                else if (recStack[*i])
+                    return true;
+            }
+
+            recStack[v] = false;  // remove o vértice da pilha de recursão
+            Stack.push(v);
+            return false;
+        }
+
+        void toposort(int v){
+            setMark(v, true);
+            int w = first(v);
+
+            while(w < countNode){
+                if(!getMark(w)){
+                    DFS(w);
+                }
+                w = next(v, w);
+            }
+
+            while(!Stack.empty()){
+                res.push_back(Stack.top());
+                Stack.pop();
             }
         }
-        sort(ans.begin(), ans.end());
-        cout << ans.size() << "\n";
-        for(auto it : ans) {
-            if(it.first == INT_MAX) {
-                cout << it.second << " " << "indefinido" << "\n";
-            } else {
-                cout << it.second << " " << it.first << "\n";
-            }
-        }
+};
+    
+
+    
+
+int main(void){
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n, m;
+    cin >> n >> m;
+
+    Graph grafo;
+
+    for(int i = 1; i <= m; i++){
+        int x, y;
+        cin >> x >> y;
+
+        grafo.setEdge(x , y);
+        grafo.in[y]++;
     }
+
+    if(!grafo.toposort(n)){
+        cout << "Sandro fails.\n";
+    }
+    else{
+        for(int i = 0; i < grafo.res.size(); i++){
+            cout << grafo.res[i] << " ";
+        }
+        cout << '\n';
+    }
+    
     return 0;
 }

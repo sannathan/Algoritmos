@@ -1,142 +1,82 @@
 #include <iostream>
 #include <vector>
 #include <stack>
+#include <bits/stdc++.h>
 
 using namespace std;
 
 class Graph{
     public:
-
-        Graph(int n){
-            listaAdj = new vector<vector<int>>[n];
-            countNode = n;
-            Mark = new bool[n];
-            for(int i{}; i < n; i++){
-                Mark[i] = false;
+        Graph (int v){
+            in = new int[v+1];
+            listaAdj = new vector<int>[v+1];
+            for(int i = 0; i <= v; i++){
+                this->listaAdj[i].reserve(v+1);
             }
+            
         }
-
-        ~Graph(){
-            delete[] listaAdj;
-            delete[] Mark;
-        }
+        vector<int> *listaAdj;
+        int *in;
+        vector<int> res;
 
         void setEdge(int i, int j){
-            if(i < countNode && j < countNode){
-                listaAdj[i].push_back(j);
-            }
+            listaAdj[i].push_back(j);
         }
 
-        bool toposort(int v, stack<int> *s){
-            setMark(v, true);
-            int w = first(v);
-
-            while(w < countNode){
-                if(!getMark(w)){
-                    if(detectCycle(w)){
-                        delete s;
-                        return false;
-                    }
-                    if(!toposort(w, s)){
-                        return false;
-                    }
+        bool toposort(int v){
+            priority_queue<int, vector<int>, greater<int>> q;
+            for(int i = 1; i <= v; i++){
+                if(in[i] == 0){
+                    q.push(i);
                 }
-                w = next(v, w);
             }
-            s->push(v);
-            return true;
+
+            while(!q.empty()){
+                int curr = q.top();
+                res.push_back(curr);
+                q.pop();
+                for(int node : listaAdj[curr]){
+                    in[node]--;
+                    if(in[node] == 0){
+                        q.push(node);
+                    }
+                }                
+            }
+            return (res.size() == v);
         }
 
     private:
-        vector<vector<int>> *listaAdj;
         bool *Mark;
         int countNode;
-
-        int first(int v){
-            if(!listaAdj[v].empty()){
-                return listaAdj[v].front();
-            }
-            return countNode;
-        }
-
-        int next(int v, int w){
-            auto elem = listaAdj[v].begin();
-
-            while(elem != listaAdj[v].end() && *elem != w){
-                ++elem;
-            }
-            if(elem != listaAdj[v].end() && *elem == w){
-                ++elem;
-                return (elem != listaAdj[v].end()) ? *elem : countNode;
-            }
-            return countNode;
-        }
-
-        void setMark(int v, bool var){
-            Mark[v] = var;
-        }
-
-        bool getMark(int v){
-            return Mark[v];
-        }
-
-        bool detectCycleDFS(int v, bool *visited, bool *recStack){
-            visited[v] = true;
-            recStack[v] = true;
-
-            for(auto it = listaAdj[v].begin(); it != listaAdj[v].end(); ++it){
-                int w = *it;
-
-                if(!visited[w]){
-                    if(detectCycleDFS(w, visited, recStack)){
-                        return true;
-                    }
-                }
-
-                else if(recStack[w]){
-                    return true;
-                }
-            }
-
-            recStack[v] = false;
-            return false;
-        }
-        bool detectCycle(int v){
-            bool *visited = new bool[countNode];
-            bool *recStack = new bool[countNode];
-
-            bool cycle = detectCycleDFS(v, visited, recStack);
-
-            delete[] visited;
-            delete[] recStack;
-
-            return cycle;
-        }
 };
 
 int main(void){
-    int n, m, auxx;
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n, m;
 
     cin >> n >> m;
 
     Graph grafo(n);
-    stack <int> *s = new stack<int>;
 
     for(int i = 1; i <= m; i++){
         int x, y;
 
         cin >> x >> y;
 
-        if(i == 1){
-            auxx = x;
-        }
-
         grafo.setEdge(x , y);
+        grafo.in[y]++;
     }
 
-    bool e = grafo.toposort(auxx, s);
-    if(!e){
-        cout << "Sandro fails.";
+    if(!grafo.toposort(n)){
+        cout << "Sandro fails.\n";
+    }
+    else{
+        for(int i = 0; i < grafo.res.size(); i++){
+            cout << grafo.res[i] << " ";
+        }
+        cout << '\n';
     }
     
     return 0;
