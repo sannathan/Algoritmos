@@ -1,5 +1,5 @@
 #include <iostream>
-#include <list>
+#include <vector>
 #include <stack>
 
 using namespace std;
@@ -8,11 +8,10 @@ class Graph{
     public:
 
         Graph(int n){
-            listaAdj = new list<int>[n];
+            listaAdj = new vector<vector<int>>[n];
             countNode = n;
             Mark = new bool[n];
             for(int i{}; i < n; i++){
-                listaAdj[i] = list<int>();
                 Mark[i] = false;
             }
         }
@@ -23,23 +22,33 @@ class Graph{
         }
 
         void setEdge(int i, int j){
-            listaAdj[i-1].push_back(j);
+            if(i < countNode && j < countNode){
+                listaAdj[i].push_back(j);
+            }
         }
 
-        void toposort(int v, stack<int> *s){
+        bool toposort(int v, stack<int> *s){
             setMark(v, true);
             int w = first(v);
 
             while(w < countNode){
                 if(!getMark(w)){
-                    toposort(w, s);
+                    if(detectCycle(w)){
+                        delete s;
+                        return false;
+                    }
+                    if(!toposort(w, s)){
+                        return false;
+                    }
                 }
                 w = next(v, w);
             }
             s->push(v);
+            return true;
         }
+
     private:
-        list<int> *listaAdj;
+        vector<vector<int>> *listaAdj;
         bool *Mark;
         int countNode;
 
@@ -58,9 +67,7 @@ class Graph{
             }
             if(elem != listaAdj[v].end() && *elem == w){
                 ++elem;
-                if(elem != listaAdj[v].end()){
-                    return *elem;
-                }
+                return (elem != listaAdj[v].end()) ? *elem : countNode;
             }
             return countNode;
         }
@@ -71,6 +78,39 @@ class Graph{
 
         bool getMark(int v){
             return Mark[v];
+        }
+
+        bool detectCycleDFS(int v, bool *visited, bool *recStack){
+            visited[v] = true;
+            recStack[v] = true;
+
+            for(auto it = listaAdj[v].begin(); it != listaAdj[v].end(); ++it){
+                int w = *it;
+
+                if(!visited[w]){
+                    if(detectCycleDFS(w, visited, recStack)){
+                        return true;
+                    }
+                }
+
+                else if(recStack[w]){
+                    return true;
+                }
+            }
+
+            recStack[v] = false;
+            return false;
+        }
+        bool detectCycle(int v){
+            bool *visited = new bool[countNode];
+            bool *recStack = new bool[countNode];
+
+            bool cycle = detectCycleDFS(v, visited, recStack);
+
+            delete[] visited;
+            delete[] recStack;
+
+            return cycle;
         }
 };
 
@@ -88,29 +128,16 @@ int main(void){
         cin >> x >> y;
 
         if(i == 1){
-            auxx = i;
+            auxx = x;
         }
 
         grafo.setEdge(x , y);
     }
 
-    grafo.toposort(auxx, s);
-
-    list <int> aux;
-
-    while(!s->empty()){
-        aux.emplace_front(s->top());
-        s->pop();
+    bool e = grafo.toposort(auxx, s);
+    if(!e){
+        cout << "Sandro fails.";
     }
-
-    auto elem = aux.begin();
-
-    while(elem != aux.end()){
-        cout << *elem << " ";
-        ++elem;
-    }
-
-    delete s;
-    grafo.~Graph();
+    
     return 0;
 }
