@@ -121,12 +121,7 @@ class Graph{
             g->matrix[i][j] = 0;
         }
 
-        void setMark(int v, bool var){
-            if(var == true)
-                Mark[v] = true;
-            else
-                Mark[v] = false;
-        }
+        
 
         bool getMark(int v){
             if(Mark[v] == true){

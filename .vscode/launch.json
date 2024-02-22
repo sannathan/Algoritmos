@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/natha/Documents/Estudos/3PERIODO/Algoritmos/Algoritmos/LISTA5",
-      "program": "c:/Users/natha/Documents/Estudos/3PERIODO/Algoritmos/Algoritmos/LISTA5/build/Debug/outDebug",
+      "cwd": "c:/Users/natha/Documents/Estudos/3PERIODO/Algoritmos/Algoritmos/AP11",
+      "program": "c:/Users/natha/Documents/Estudos/3PERIODO/Algoritmos/Algoritmos/AP11/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
