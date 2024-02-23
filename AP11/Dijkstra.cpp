@@ -61,6 +61,22 @@ class Graph{
             return countNode;
         }
 
+        int weight(int v, int w, int *D){
+            int cost = D[w];
+            if(v > w){
+                for(int i = w; i > v; --i){
+                    cost += D[P[i]];
+                }
+            }
+            else{
+                for(int i = v; i > w; --i){
+                    cost += D[P[i]];
+                }
+            }
+            
+            return cost;
+        }
+
         void Dijkstra(int s, int *D){
             int v, p, w;
             for(int i = 0; i < countNode; i++){
@@ -73,16 +89,17 @@ class Graph{
             D[s] = 0;
             for(int i = 0; i < countNode; i++){
                 do{
-                    H.pop();
-                    //Colocar um if aqui
+                    if(H.size() > 0){
+                        H.pop();
+                    }
                 }while(!(GetMark(v) == false));
                 setMark(v, true);
                 P[v] = p;
                 w = first(v);
                 while(w < countNode){
-                    if(GetMark(w) != true && D[w] > (D[v] + weight(v, w)){
-                        D[w] = D[v] + weight(v, w);
-                        in
+                    if(GetMark(w) != true && D[w] > (D[v] + weight(v, w, D))){
+                        D[w] = D[v] + weight(v, w, D);
+                        H.push({{v, w}, D[w]});
                     }
                     w = next(v, w);
                 }
