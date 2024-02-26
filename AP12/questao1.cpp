@@ -1,11 +1,12 @@
 #include <iostream>
 #include <queue>
-#include <bits/stdc++.h> 
+#include <bits/stdc++.h>
+#include <limits>
 
 using namespace std;
 
 struct ComparePairs{
-    bool operator()(const pair<int, int>& p1, const pair<int, int>& p2){
+    bool operator()(const pair<pair<int, int>, int>& p1, const pair<pair<int, int>, int>& p2){
         return p1.second > p2.second;
     }
 };
@@ -17,19 +18,18 @@ class Graph{
             P = new int [n];
             Mark = new bool [n];
             listaAdj = new vector<pair<int, int>>[n];
+            
             for(int i{}; i < n; i++){
-                listaAdj[n].reserve(n);
+                listaAdj[i] = vector<pair<int, int>>(1,make_pair(0, 0));
             }
         }
 
         ~Graph(){
-            //delete [] D;
             delete [] P;
             delete [] Mark;
         }
 
         int countNode;
-        //int *D;
         int *P;
         vector<pair<int, int>> *listaAdj;
         bool *Mark;
@@ -44,21 +44,23 @@ class Graph{
         }
 
         int next(int v, int w){
-            for(int i = w + 1; i <= countNode - 1; i++){
-                if(matrix[v][i] != 0){
-                    return i;
+            if(!listaAdj[v].empty()){
+                if(w >= 0 && w < listaAdj[v].size() - 1){
+                    for(int i = w + 1; i < listaAdj[v].size(); i++){
+                        if(listaAdj[v][i].first != 0 && listaAdj[v][i].second != 0){
+                            return i;
+                        }
+                    }
                 }
             }
             return countNode;
         }
 
-        int first(int v){
-            for(int i{}; i <= countNode - 1; i++){
-                if(matrix[v][i] != 0){
-                    return i;
-                }
+        pair<int, int> first(int v){
+            if(!listaAdj[v].empty()){
+                return listaAdj[v][0];
             }
-            return countNode;
+            return make_pair(countNode, countNode);
         }
 
         int weight(int v, int w, int *D){
@@ -85,10 +87,8 @@ class Graph{
         void Dijkstra(int s, int *D){
             pair<pair<int, int>, int> pv;
 
-            D = new int[countNode];
-
             for(int i = 0; i < countNode; i++){
-                D[i] = countNode + 1;
+                D[i] = numeric_limits<int>::max();
                 P[i] = -1;
 
                 setMark(i, false);
@@ -107,13 +107,13 @@ class Graph{
                 }while(!(GetMark(pv.first.second) == false));
                 setMark(pv.first.second, true);
                 P[pv.first.second] = pv.first.first;
-                int w = first(pv.first.second);
-                while(w < countNode){
-                    if(GetMark(w) != true && D[w] > (D[pv.first.second] + weight(pv.first.second, w, D))){
-                        D[w] = D[pv.first.second] + weight(pv.first.second, w, D);
-                        H.push({{pv.first.second, w}, D[w]});
+                pair<int, int> w = first(pv.first.second);
+                while(w.first < countNode){
+                    if(GetMark(w.first) != true && D[w.first] > (D[pv.first.second] + weight(pv.first.second, w.first, D))){
+                        D[w.first] = D[pv.first.second] + weight(pv.first.second, w.first, D);
+                        H.push({{pv.first.second, w.first}, D[w.first]});
                     }
-                    w = next(pv.first.second, w);
+                    w.first= next(pv.first.second, w.first);
                 }
             } 
         }       
@@ -129,13 +129,20 @@ int main(void){
     for(int i{}; i < m; i++){
         int a, b, w;
 
-        cin >> a, b, w;
+        cin >> a >> b >> w;
 
         grafo.setEdge(a, b, w);
     }
 
     int *D;
-    grafo.Dijkstra(0, D)
+    D = new int[grafo.countNode];
+    
+    grafo.Dijkstra(0, D);
 
+    for(int i{}; i < n; i++){
+        cout << D[i] << " ";
+    }
+
+    delete[] D;
     return 0;
 }
