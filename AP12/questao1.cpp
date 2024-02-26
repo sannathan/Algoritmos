@@ -31,8 +31,8 @@ class Graph{
 
         int countNode;
         int *P;
-        vector<pair<int, int>> *listaAdj;
         bool *Mark;
+        vector<pair<int, int>> *listaAdj;
         priority_queue<pair<pair<int, int>, int>, vector<pair<pair<int, int>, int>>, ComparePairs> H;
 
         void setMark(int v, bool var){
@@ -105,10 +105,12 @@ class Graph{
                         return;
                     }
                 }while(!(GetMark(pv.first.second) == false));
+
                 setMark(pv.first.second, true);
                 P[pv.first.second] = pv.first.first;
                 pair<int, int> w = first(pv.first.second);
-                while(w.first < countNode){
+
+                while(w.first != countNode){
                     if(GetMark(w.first) != true && D[w.first] > (D[pv.first.second] + weight(pv.first.second, w.first, D))){
                         D[w.first] = D[pv.first.second] + weight(pv.first.second, w.first, D);
                         H.push({{pv.first.second, w.first}, D[w.first]});
@@ -140,7 +142,12 @@ int main(void){
     grafo.Dijkstra(0, D);
 
     for(int i{}; i < n; i++){
-        cout << D[i] << " ";
+        if(D[i] == INT_MAX){
+            cout << "-1 ";
+        }
+        else{
+            cout << D[i] << " ";
+        }
     }
 
     delete[] D;
