@@ -6,7 +6,7 @@
 using namespace std;
 
 struct ComparePairs{
-    bool operator()(const pair<pair<int, int>, int>& p1, const pair<pair<int, int>, int>& p2){
+    bool operator()(const pair<int, int>& p1, const pair<pair<int, int>, int>& p2){
         return p1.second > p2.second;
     }
 };
@@ -29,11 +29,8 @@ class Graph{
             delete [] Mark;
         }
 
-        int countNode;
         int *P;
         bool *Mark;
-        vector<pair<int, int>> *listaAdj;
-        priority_queue<pair<pair<int, int>, int>, vector<pair<pair<int, int>, int>>, ComparePairs> H;
 
         void setMark(int v, bool var){
             Mark[v] = var;
@@ -84,41 +81,56 @@ class Graph{
             listaAdj[j].push_back({i, w});
         }
 
-        void Dijkstra(int s, int *D){
-            pair<pair<int, int>, int> pv;
-
-            for(int i = 0; i < countNode; i++){
-                D[i] = numeric_limits<int>::max();
-                P[i] = -1;
-
-                setMark(i, false);
-            }
-            H.push({{s, s}, 0});
+        vector<int> Dijkstra(int s){
+            vector<int> D(countNode, numeric_limits<int>::max());
             D[s] = 0;
-            for(int i = 0; i < countNode; i++){
-                do{
-                    if(H.size() > 0){
-                        pv = H.top();
-                        H.pop();
-                    }
-                    else{
-                        return;
-                    }
-                }while(!(GetMark(pv.first.second) == false));
 
-                setMark(pv.first.second, true);
-                P[pv.first.second] = pv.first.first;
-                pair<int, int> w = first(pv.first.second);
+            priority_queue<pair<int, int>, vector<pair<int, int>>, ComparePairs> H;
+            H.push({s, 0});
 
-                while(w.first != countNode){
-                    if(GetMark(w.first) != true && D[w.first] > (D[pv.first.second] + weight(pv.first.second, w.first, D))){
-                        D[w.first] = D[pv.first.second] + weight(pv.first.second, w.first, D);
-                        H.push({{pv.first.second, w.first}, D[w.first]});
+            while(!H.empty()){
+                int pv = H.top().first;
+                H.pop();
+
+                for(const auto& edge : listaAdj[pv]){
+                    int v = edge.first;
+                    int weight = edge.second;
+
+                    if(D[v] > D[pv] + weight){
+                        D[v] = D[pv] + weight;
+                        H.push({v, D[v]});
                     }
-                    w.first= next(pv.first.second, w.first);
                 }
-            } 
-        }       
+            }
+
+            return D;
+            /*   for(int i = 0; i < countNode; i++){
+                    do{
+                        if(H.size() > 0){
+                            pv = H.top();
+                            H.pop();
+                        }
+                        else{
+                            return;
+                        }
+                    }while(!(GetMark(pv.first.second) == false));
+
+                    setMark(pv.first.second, true);
+                    P[pv.first.second] = pv.first.first;
+                    pair<int, int> w = first(pv.first.second);
+
+                    while(w.first != countNode){
+                        if(GetMark(w.first) != true && D[w.first] > (D[pv.first.second] + weight(pv.first.second, w.first, D))){
+                            D[w.first] = D[pv.first.second] + weight(pv.first.second, w.first, D);
+                            H.push({{pv.first.second, w.first}, D[w.first]});
+                        }
+                        w.first= next(pv.first.second, w.first);
+                    }
+                }*/ 
+            }
+    private:
+        int countNode;
+        vector<vector<pair<int, int>>> listaAdj;
 };
 
 int main(void){
@@ -136,20 +148,16 @@ int main(void){
         grafo.setEdge(a, b, w);
     }
 
-    int *D;
-    D = new int[grafo.countNode];
-    
-    grafo.Dijkstra(0, D);
+    vector<int> distancia = grafo.Dijkstra(0);
 
-    for(int i{}; i < n; i++){
-        if(D[i] == INT_MAX){
+    for(int d : distancia){
+        if(d == numeric_limits<int>::max()){
             cout << "-1 ";
         }
         else{
-            cout << D[i] << " ";
+            cout << d << " ";
         }
     }
 
-    delete[] D;
     return 0;
 }

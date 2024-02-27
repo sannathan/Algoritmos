@@ -15,7 +15,7 @@ class Graph {
 public:
     Graph(int n) : countNode(n), adjList(n) {}
 
-    void addEdge(int src, int dest, int weight) {
+    void setEdge(int src, int dest, int weight) {
         adjList[src].push_back(make_pair(dest, weight));
         adjList[dest].push_back(make_pair(src, weight)); // Para arestas não-dirigidas
     }
@@ -59,7 +59,7 @@ int main() {
     for (int i = 0; i < m; ++i) {
         int a, b, w;
         cin >> a >> b >> w;
-        graph.addEdge(a, b, w);
+        graph.setEdge(a, b, w);
     }
 
     vector<int> distances = graph.dijkstra(v);
@@ -74,3 +74,4 @@ int main() {
 
     return 0;
 }
+
