@@ -68,7 +68,6 @@ int main() {
 
         if(n == 0 && m == 0){
             break;
-
         }
         Graph GPS(n);
         for(int i{}; i < m; i++){
