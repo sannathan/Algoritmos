@@ -1,65 +1,55 @@
-#include <iostream>
-#include <vector>
+#include<bits/stdc++.h>
+#define MAX 30
 
 using namespace std;
 
-int dx[8] = {-2, -2, -1, -1, 1, 1, 2, 2};
-int dy[8] = {-1, 1, -2, 2, -2, 2, -1, 1};
+int n;
+vector<pair<int, int>> tab;
+map<pair<int, int>, int> m;
+vector<pair<int, int>> movimentos = {{2, 1}, {1, 2}, {-1, 2},{-2, 1}, 
+                                     {-2, -1}, {-1, -2}, {1, -2}, {2, -1}};
 
-void DFS(int x,int y, vector<vector<int>>& adj, vector<bool>& visited) {
-    visited[v] = true;
-    for (int i = 0; i < 8; i++) {
-        int nx = x + dx[i], ny = y + dy[i];
-        if (nx >= 0 && nx < adj.size() && ny >= 0 && ny < adj[0].size() && !visited[nx][ny]) {
-            DFS(nx, ny, adj, visited);
-        }
-    }
+bool posicaoValida(int x, int y){
+    return (x >= 0) && (x < n) && (y >= tab[x].first) && (y <= tab[x].second) && (!m.count({x, y}) || m[{x, y}] == 0);
 }
 
-int main(void){
-    int s = 0;
-    while(true){
-        int n;
-
-        cin >> n;
-        
-        if(n == 0){
-            break;
+int passeioCavalo(int x, int y){
+    m[{x, y}] = 1;
+    int casasAtingidas = 0;
+    for(auto mov : movimentos){
+        int x2 = x + mov.first;
+        int y2 = y + mov.second;
+        if (posicaoValida(x2, y2)){ //Verificando se é possível fazer este movimento
+            casasAtingidas = max(casasAtingidas, passeioCavalo(x2, y2));
         }
-
-        vector<vector<int>> tabuleiro(n, vector<int>(n, 0));
-        vector<bool> visited(n, false);
-        vector<int> somas(n, 0);
-
-        for(int i{}; i < n; i++){
-            int x, y;
-
-            cin >> x >> y;
-
-            somas[i] = x+y;
-
-            for(int j{}; j < x+y; j++){
-                if(j < x){
-                    tabuleiro[i][j] = 0;
-                }
-                else{
-                    tabuleiro[i][j] = 1;
-                }
-            }
-        }
-
-        DFS(0, tabuleiro, visited);
-
-        int squares = 0;
-
-        for(int i{}; i < n; i++){
-            if(visited[i] == false){
-                squares++;
-            }
-        }
-
-        cout << "Case " << s+1 << ", " << squares << " squares can not be reached." << endl;
-        s++;
     }
-    return 0;
+    m[{x, y}] = 0;
+    return casasAtingidas + 1;
+}
+
+int main(){
+    int i, j, casasPuladas, qtdeCasas, totalCasas, x, y;
+    int caso = 1;
+    while(true){
+        cin >> n;
+        if (n == 0)
+            break;
+
+        totalCasas = 0;
+        x = 0;
+        for(i = 0; i < n; i++){
+            cin >> casasPuladas >> qtdeCasas;
+            if (i == 0){
+                y = casasPuladas;
+            }
+            tab.push_back({casasPuladas, casasPuladas + qtdeCasas - 1});
+            totalCasas += qtdeCasas;
+        }
+        int resp = totalCasas - passeioCavalo(x,y);
+        cout << "Case " << caso++ << ", " << resp <<
+                (resp == 1 ? " square" : " squares")  << 
+                " can not be reached." << endl;
+        tab.clear();
+        m.clear();
+    }
 }
