@@ -1,7 +1,7 @@
 #include "ArrayBasedStack.h"
 #include <cassert>
 
-const int defaultSize = 100;
+const int defaultSize = 1000;
 template <typename E> class AStack: public Stack<E>
 {
 private:
@@ -29,19 +29,19 @@ public:
 
     void push(const E& it)
     {
-        assert(top != maxSize, "Stack is full");
+        assert(top != maxSize && "Stack is full");
         listArray[top++] = it;
     }
 
     E pop()
     {
-        assert(top != 0, "Stack is empty");
+        assert(top != 0 && "Stack is empty");
         return listArray[--top];
     }
 
     const E& topValue() const
     {
-        assert(top != 0, "Stack is empty");
+        assert(top != 0  && "Stack is empty");
         return listArray[top-1];
     }
 
