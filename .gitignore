@@ -1,0 +1,64 @@
+# Executáveis compilados
+*.exe
+*.out
+*.app
+*.x
+*.o
+
+# Arquivos objeto
+*.o
+*.ko
+*.obj
+*.elf
+
+# Arquivos de biblioteca
+*.lib
+*.a
+*.la
+*.lo
+
+# Arquivos temporários do compilador
+*.gch
+*.pch
+
+# Arquivos temporários do editor
+*~
+*.swp
+*.swo
+*.tmp
+*.bak
+
+# Pastas de output
+output/
+build/
+Debug/
+Release/
+
+# Arquivos do VS Code
+.vscode/
+*.code-workspace
+
+# IDEs JetBrains (CLion, IntelliJ, etc)
+.idea/
+*.iml
+*.iws
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+*.log
+
+# Executáveis sem extensão (comum em Linux)
+A
+B
+Exercise1
+Exercise3
+Exercise4
+BalancedBrackets
+EP4
+questao1
+
+# Arquivos de teste
+teste
+TESTE
+Teste
