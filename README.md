@@ -1,38 +1,87 @@
-# Algoritmos e estruturas de dados
+# Algoritmos e Estruturas de Dados
 
-Repositório contendo códigos de estudo das disciplinas de Algoritmos e Estruturas de Dados, incluindo implementações em C e C++ de diversos algoritmos clássicos, estruturas de dados e exercícios práticos.
+Repositório contendo códigos de estudo da disciplina **CIN0135 - Estruturas de Dados Orientadas a Objetos** e **IF672 - Algoritmos e Estruturas de Dados**, incluindo implementações em C e C++ de diversos algoritmos clássicos, estruturas de dados e exercícios práticos.
 
-## Estrutura do Projeto
+## 📁 Estrutura do Projeto
 
-O repositório está organizado em pastas que agrupam implementações por listas de exercícios, avaliações práticas, estudos de assuntos específicos e exemplos práticos. Entre os principais tópicos e algoritmos implementados, destacam-se:
+```
+Algoritmos/
+├── Code/                              # Códigos de exercícios e avaliações
+│   ├── APs/                          # Avaliações Práticas (AP1-AP12)
+│   ├── EPs/                          # Exercícios Práticos (EP1-EP4)
+│   ├── Lists/                        # Listas de Exercícios (LISTA1-LISTA8)
+│   └── PRATICA/                      # Exemplos práticos e POO
+│
+└── DataStructuresImplementation/     # Implementações de estruturas de dados
+    ├── ArrayBasedStack.h             # Interface da pilha baseada em array
+    └── ArrayBasedStack.cpp           # Implementação da pilha
+```
 
-- **Algoritmos de Ordenação:**
-	- Merge Sort (`AP1/merge_sort.c`)
-	- Quick Sort (`AP2/quicksort.c`, `LISTA1/A.c`, `LISTA1/B.c`)
-	- Selection Sort (`PRATICA/Selection_sort.c`)
-- **Busca:**
-	- Busca Binária (`AP2/binary_search.c`, `Assuntos/Binary_search.cpp`)
-- **Estruturas de Dados:**
-	- Listas sequenciais e encadeadas (`AP3/arraylist.cpp`, `AP3/linkedlist.cpp`)
-	- Pilhas e filas (`LISTA5/stack.cpp`)
-	- Tabelas Hash (`AP6/hashtables1.cpp`, `AP6/hashtables2.cpp`, `LISTA3/Hash_it.cpp`)
-	- Árvores binárias de busca e percursos em árvores (`LISTA3/Traversing_Tree.cpp`)
-- **Grafos:**
-	- Algoritmo de Dijkstra (`AP11/Dijkstra.cpp`)
-	- Representação e manipulação de grafos (`LISTA5/graph.cpp`)
-- **Programação Dinâmica:**
-	- Knapsack (Mochila) (`Assuntos/bottom_up_Knapsack.cpp`)
-- **Exercícios e Avaliações:**
-	- Diversas listas de exercícios (LISTA1 a LISTA8)
-	- Avaliações práticas (AP1 a AP12, EP1 a EP4)
-	- Exemplos de provas e maratonas (`EP1/Maratona_cin.c`)
-- **POO e exemplos práticos:**
-	- Exemplos de Programação Orientada a Objetos em C++ (`PRATICA/POO1.CPP`, `PRATICA/POO2.cpp`, `PRATICA/POO3.cpp`)
+## 🔍 Principais Tópicos Implementados
 
-## Como navegar
+### Algoritmos de Ordenação
+- **Merge Sort** (`Code/APs/AP1/merge_sort.c`)
+- **Quick Sort** (`Code/APs/AP2/quicksort.c`)
+- **Selection Sort** (`Code/PRATICA/Selection_sort.c`)
 
-Cada pasta contém arquivos-fonte relacionados ao tema ou exercício proposto. Os arquivos `.c` e `.cpp` são os códigos-fonte, enquanto arquivos `.exe` são executáveis gerados (principalmente para Windows). Algumas pastas possuem subpastas `output/` para armazenar os executáveis.
+### Algoritmos de Busca
+- **Busca Binária** (`Code/APs/AP2/binary_search.c`)
 
-## Objetivo
+### Estruturas de Dados
+- **Pilhas (Stack)**
+  - Implementação com array (`DataStructuresImplementation/ArrayBasedStack.cpp`)
+  - Exemplos práticos (`Code/Lists/LISTA1/BalancedBrackets.cpp`)
+- **Listas**
+  - ArrayList (`Code/APs/AP3/arraylist.cpp`)
+  - LinkedList (`Code/APs/AP3/linkedlist.cpp`)
+- **Tabelas Hash** (`Code/APs/AP6/hashtables1.cpp`, `Code/Lists/LISTA3/Hash_it.cpp`)
+- **Árvores** (`Code/Lists/LISTA3/Traversing_Tree.cpp`)
 
-O objetivo deste repositório é servir como base de estudos, consulta e prática de algoritmos fundamentais e estruturas de dados, tanto para reforço acadêmico quanto para preparação para provas e competições de programação.
+### Grafos
+- **Algoritmo de Dijkstra** (`Code/APs/AP11/Dijkstra.cpp`)
+- **Representação de grafos** (`Code/Lists/LISTA5/graph.cpp`)
+
+### Programação Orientada a Objetos
+- Exemplos práticos em C++ (`Code/PRATICA/POO1.CPP`, `POO2.cpp`, `POO3.cpp`)
+- Templates e classes abstratas (`DataStructuresImplementation/`)
+
+## 🚀 Como Compilar e Executar
+
+### Compilar arquivos C
+```bash
+gcc arquivo.c -o executavel
+./executavel
+```
+
+### Compilar arquivos C++
+```bash
+g++ arquivo.cpp -o executavel
+./executavel
+```
+
+### Usando estruturas de dados implementadas
+```cpp
+#include "DataStructuresImplementation/ArrayBasedStack.h"
+
+int main() {
+    AStack<int> pilha;
+    pilha.push(10);
+    pilha.push(20);
+    cout << pilha.pop() << endl;  // 20
+    return 0;
+}
+```
+
+## 📚 Objetivo
+
+Este repositório serve como:
+- 📖 Base de estudos e consulta de algoritmos fundamentais
+- 💻 Prática de implementação de estruturas de dados
+- 🎯 Preparação para avaliações acadêmicas
+- 🏆 Treino para competições de programação
+
+## 📝 Observações
+
+- Arquivos executáveis e pastas `output/` são ignorados pelo Git
+- Implementações seguem padrões de POO quando aplicável
+- Código documentado e organizado para facilitar o aprendizado
