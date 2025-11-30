@@ -24,6 +24,6 @@ public:
   virtual const E &getValue() const = 0;
 };
 
-#include "ArrayBasedList.cpp"
+#include "LinkedList.cpp"
 
 #endif

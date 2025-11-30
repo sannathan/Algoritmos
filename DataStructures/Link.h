@@ -5,11 +5,11 @@ template <typename E> class Link {
 public:
   E element;
   Link *next;
-  Link(const E &elemval, Link *nextval = NULL) {
-    element - elemval;
+  explicit Link(const E &elemval, Link *nextval = nullptr) {
+    element = elemval;
     next = nextval;
   }
-  Link(Link *nextval = NULL) { next = nextval; }
+  explicit Link(Link *nextval = nullptr) { next = nextval; }
 };
 
 #endif
