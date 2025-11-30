@@ -14,4 +14,4 @@ public:
   virtual E removeAny() = 0;
   virtual E find(const Key &k) const = 0;
   virtual int size() = 0;
-}
+};
