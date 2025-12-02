@@ -1,3 +1,6 @@
+#ifndef ESTRUTURAS_DE_DADOS_DICTIONARY_H
+#define ESTRUTURAS_DE_DADOS_DICTIONARY_H
+#
 // Dictionary abstract class
 template <typename Key, typename E> class Dictionary {
 private:
@@ -15,3 +18,7 @@ public:
   virtual E find(const Key &k) const = 0;
   virtual int size() = 0;
 };
+
+#include "HashTable.cpp"
+
+#endif

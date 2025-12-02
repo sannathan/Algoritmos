@@ -55,12 +55,67 @@ Output:
 */
 
 #include <iostream>
+#include <string>
+#include <list>
+#include "../../../DataStructures/HashTable.h"
 
 using namespace std;
 
-int main() {
-  char c = ' ';
+int main()
+{
+  int t;
 
-  cout << (int)c << endl;
+  cin >> t;
+
+  for (int i{}; i < t; i++)
+  {
+    int n1;
+    hashdict<string, string> HT(101, "");
+    string keysIndexQueue[101];
+    for (int k = 0; k < 101; k++)
+    {
+      keysIndexQueue[k] = "";
+    }
+
+    cin >> n1;
+
+    for (int j{}; j < n1; j++)
+    {
+      string rawOperation;
+
+      cin >> rawOperation;
+
+      size_t colonPos = rawOperation.find(':');
+      string operation = rawOperation.substr(0, colonPos);
+      string key = rawOperation.substr(colonPos + 1);
+
+      if (operation == "ADD")
+      {
+        int idx = HT.insert(key, key);
+        if (idx != -1)
+        {
+          keysIndexQueue[idx] = key;
+        }
+      }
+      else if (operation == "DEL")
+      {
+        int idx = HT.remove(key);
+        if (idx != -1)
+        {
+          keysIndexQueue[idx] = "DELETED";
+        };
+      }
+    }
+
+    cout << HT.size() << endl;
+    for (int j{}; j < 101; j++)
+    {
+      if (keysIndexQueue[j] != "DELETED" && keysIndexQueue[j] != "")
+      {
+        cout << j << ':' << keysIndexQueue[j] << endl;
+      }
+    }
+  }
+
   return 0;
 }

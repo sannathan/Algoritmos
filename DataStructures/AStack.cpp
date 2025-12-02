@@ -1,4 +1,4 @@
-#include "ArrayBasedStack.h"
+#include "Stack.h"
 #include <cassert>
 
 const int defaultSize = 1000;
