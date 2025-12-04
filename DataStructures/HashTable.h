@@ -13,6 +13,7 @@ private:
   int M;
   int currcnt;
   Key EMPTYKEY;
+  Key TOMBSTONE;
 
   int h(int x) const { return x % M; }
 
@@ -21,21 +22,19 @@ private:
     int sum = 0;
     for (size_t i = 1; i <= x.length(); i++)
     {
-      sum += (int)x[i-1] * i;
+      sum += (int)x[i - 1] * i;
     }
     sum *= 19;
     return sum % M;
   }
 
-  int p(Key K, int i) const
-  {
-    return ((i * i) + (23 * i));
-  }
+  int p(Key K, int i) const { return ((i * i) + (23 * i)); }
 
   int hashInsert(const Key &k, const E &e)
   {
     int home;
     int pos = home = h(k);
+    int firstTombstone = -1;
 
     if (EMPTYKEY == (HT[pos]).key())
     {
@@ -43,7 +42,11 @@ private:
       HT[pos] = temp;
       return pos;
     }
-    if (k == (HT[pos]).key())
+    else if (TOMBSTONE == (HT[pos]).key())
+    {
+      firstTombstone = pos;
+    }
+    else if (k == (HT[pos]).key())
     {
       return -1;
     }
@@ -53,15 +56,34 @@ private:
       pos = (home + p(k, i)) % M;
       if (EMPTYKEY == (HT[pos]).key())
       {
+        if (firstTombstone != -1)
+        {
+          pos = firstTombstone;
+        }
         KVpair<Key, E> temp(k, e);
         HT[pos] = temp;
         return pos;
       }
-      if (k == (HT[pos]).key())
+      if (TOMBSTONE == (HT[pos]).key())
+      {
+        if (firstTombstone == -1)
+        {
+          firstTombstone = pos;
+        }
+      }
+      else if (k == (HT[pos]).key())
       {
         return -1;
       }
     }
+
+    if (firstTombstone != -1)
+    {
+      KVpair<Key, E> temp(k, e);
+      HT[firstTombstone] = temp;
+      return firstTombstone;
+    }
+
     return -1;
   }
 
@@ -85,8 +107,13 @@ private:
 
     if (k == (HT[pos]).key())
     {
-      (HT[pos]).setKey(EMPTYKEY);
+      (HT[pos]).setKey(TOMBSTONE);
       return pos;
+    }
+
+    if (EMPTYKEY == (HT[pos]).key())
+    {
+      return -1;
     }
 
     for (int i = 1; i <= 19; i++)
@@ -98,7 +125,7 @@ private:
       }
       if (k == (HT[pos]).key())
       {
-        (HT[pos]).setKey(EMPTYKEY);
+        (HT[pos]).setKey(TOMBSTONE);
         return pos;
       }
     }
@@ -110,6 +137,7 @@ public:
   {
     M = sz;
     EMPTYKEY = k;
+    TOMBSTONE = "######";
     currcnt = 0;
     HT = new KVpair<Key, E>[sz];
     for (int i{}; i < M; i++)
@@ -119,19 +147,27 @@ public:
   }
 
   ~hashdict() { delete[] HT; }
+
   E find(const Key &k) const { return hashSearch(k); }
+
   int size() { return currcnt; }
+
   int insert(const Key &k, const E &it)
   {
-    assert(currcnt < M && "Hash table is full");
+    if (currcnt >= M)
+      return -1;
     int result = hashInsert(k, it);
-    currcnt++;
+    if (result != -1)
+      currcnt++;
     return result;
   }
+
   int remove(const Key &k)
   {
+    if(currcnt == 0) return -1;
     int keyPosition = hashDelete(k);
-    currcnt--;
+    if (keyPosition != -1)
+      currcnt--;
     return keyPosition;
   }
 };
